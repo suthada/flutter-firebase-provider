@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:task/screen/signin_screen.dart';
+import 'package:task/screen/signup_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -19,7 +21,11 @@ class MainApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.pink),
         useMaterial3: true,
       ),
-      home: const TodoApp(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const SigninScreen(),
+        '/todo': (context) => const TodoApp(),
+      },
     );
   }
 }
@@ -147,6 +153,15 @@ class _TodoAppState extends State<TodoApp> {
       appBar: AppBar(
         title: const Text("Todo"),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: () {
+              // Navigate to SigninScreen
+              Navigator.of(context).pushReplacementNamed('/');
+            },
+          ),
+        ],
       ),
       body: StreamBuilder(
         stream: FirebaseFirestore.instance.collection("tasks").snapshots(),
